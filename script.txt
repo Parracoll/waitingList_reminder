@@ -1,0 +1,14 @@
+def run(args) {
+  def waitingListt = args.entity
+  
+  if (waitingList.status == waitingListStatus.SUCCESS && waitingList.confirmationStatus == ConfirmationStatus.NOT_SENT) {
+    def m = Email.create("waitingList reminder")
+    m.bind(waitingList: waitingList)
+    m.to(waitingList.student.contact)
+    
+    m.send()
+
+    waitingList.setConfirmationStatus(ConfirmationStatus.SENT)
+    args.context.commitChanges()
+  }
+}

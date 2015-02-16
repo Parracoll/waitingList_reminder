@@ -1,0 +1,23 @@
+${render("Header")} 
+
+Dear ${waitingList.student.contact.fullName},
+
+You are receiving this message because you are on the ${Preferences.get("college.name")} waiting list.
+
+The following information is for upcoming classes.
+
+Class: ${waitingList.courseClass.course.code}-${waitingList.courseClass.code} ${waitingList.courseClass.course.name}
+<% if (waitingList.courseClass.startDateTime == null) { %>
+Start: On waitingList
+Expected duration: ${waitingList.courseClass.expectedSessions ?: "specified"}
+<% } else { %>
+Start: ${waitingList.courseClass.startDateTime.format("h:mm a EEEE d MMMM yyyy zzzz", waitingList.courseClass.getTimeZone())}
+
+<% } %>
+Location:${waitingList.courseClass.displayableLocation}
+
+Please visit ${Preferences.get("web.url")}/class/${waitingList.courseClass.course.code}-${waitingList.courseClass.code} to enrol in the course.
+
+WaitingList reference: ${waitingList.invoiceLine.invoice.invoiceNumber}
+
+${render("Footer")}
